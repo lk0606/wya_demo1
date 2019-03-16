@@ -4,12 +4,14 @@ import __tpl__ from './__tpl__';
 import _common from './_common';
 import login from './login';
 import home from './home';
+import test from './test';
 
 const API = {
 	...__tpl__,
 	..._common,
 	...login,
-	...home
+	...home,
+	...test
 };
 
 let baseUrl;
