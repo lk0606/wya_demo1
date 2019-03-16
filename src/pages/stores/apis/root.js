@@ -21,6 +21,7 @@ if (__DEV__) {
 		baseUrl = 'http://localhost:3000';
 	} else { // 开发环境-后端数据
 		baseUrl = 'https://gateway.wyawds.com';
+		// baseUrl = 'https://oa2.ruishan666.com';
 	}
 } else {
 	// 生产环境

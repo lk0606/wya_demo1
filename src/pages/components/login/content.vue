@@ -1,10 +1,10 @@
 <template>
-	<vc-form 
-		ref="form" 
-		:model="formValidate" 
-		:rules="ruleValidate" 
+	<vc-form
+		ref="form"
+		:model="formValidate"
+		:rules="ruleValidate"
 		:label-width="120"
-		style="height: 100vh" 
+		style="height: 100vh"
 		position="left"
 		class="g-flex-cc g-fd-c"
 	>
@@ -16,7 +16,7 @@
 		</vc-form-item>
 		<div @click="handleLogin">
 			登录
-		</div> 	
+		</div>
 	</vc-form>
 </template>
 
@@ -49,11 +49,12 @@ export default {
 		...mapState(['loginMain'])
 	},
 	created() {
-		
+
 	},
 	methods: {
 		handleLogin() {
 			this.$refs.form.validate((isValid) => {
+				console.log(this.formValidate, 'this.formValidate');
 				if (!isValid) return;
 				this.request({
 					url: 'LOGIN_MAIN_POST',
@@ -63,7 +64,13 @@ export default {
 						data: {
 							...this.formValidate
 						}
-					}
+					},
+					// mode: 'cors',
+					// params: {
+					// 	name: '13155556666',
+					// 	password: '123456'
+					// },
+					// loading: false
 				}).then((res) => {
 					console.log(res);
 					Message.success(`登录成功 - userName: ${this.loginMain.user}`);

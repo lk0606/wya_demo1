@@ -24,13 +24,13 @@ export default [
 		route: '/tpl/form'
 	},
 	{
-		name: 'Paging',
+		name: 'Paging(客户管理)',
 		icon: '',
 		show: true,
 		route: '/tpl/paging',
 		children: [
 			{
-				name: 'Basic',
+				name: 'Basic(意向客户)',
 				icon: '',
 				show: true,
 				route: '/tpl/paging/basic'

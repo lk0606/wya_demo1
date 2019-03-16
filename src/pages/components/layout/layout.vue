@@ -1,16 +1,16 @@
 <template>
 	<div class="c-layout">
 		<div class="_header-bar g-flex-ac">
-			<img >
+			<img>
 			<span class="g-fs-20">后台管理中心</span>
-			<vc-select 
-				v-model="curModule" 
+			<vc-select
+				v-model="curModule"
 				style="width:200px"
 				@on-change="handleChangeModule"
 			>
-				<vc-option 
-					v-for="item in modules" 
-					:value="item.value" 
+				<vc-option
+					v-for="item in modules"
+					:value="item.value"
 					:key="item.value"
 				>
 					{{ item.name }}
@@ -18,18 +18,18 @@
 			</vc-select>
 		</div>
 		<div class="g-flex">
-			<left-menu 
+			<left-menu
 				:menus="leftMenus"
 			>
 				<div slot="avatar">avatar</div>
 			</left-menu>
 			<div :style="{'padding-top': paddingTop}" class="g-col _content g-relative">
-				<top-menu 
+				<top-menu
 					ref="topBar"
 					:menus="topMenus"
 					:on-mounted="handeSetPaddingTop"
 				/>
-				<router-view class="v-router" />
+				<router-view class="v-router"/>
 			</div>
 		</div>
 	</div>
@@ -91,26 +91,29 @@ export default {
 </script>
 
 <style lang="scss">
-.c-layout{
-	position: relative;
-	overflow: hidden;
-	._header-bar{
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 56px;
-		z-index: 10;
-		background: #e84854;
-		color: #ffffff;
-		box-shadow: 0 1px 1px rgba(0,0,0,.1);
+	.c-layout {
+		position: relative;
+		overflow: hidden;
+
+		._header-bar {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 56px;
+			z-index: 10;
+			background: #e84854;
+			color: #ffffff;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+		}
+
+		._content {
+			padding-left: 180px;
+		}
+
+		.v-router {
+			margin: 12px 12px 0 16px;
+			background: #ffffff;
+		}
 	}
-	._content {
-		padding-left: 180px;
-	}
-	.v-router {
-		margin: 12px 12px 0 16px;
-		background: #ffffff;
-	}
-}
 </style>

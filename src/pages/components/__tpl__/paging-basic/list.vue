@@ -32,7 +32,7 @@ export default {
 		}
 	},
 	mounted() {
-		
+
 	},
 	methods: {
 		loadData(page, pageSize) {

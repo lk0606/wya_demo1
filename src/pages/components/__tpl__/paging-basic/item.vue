@@ -4,6 +4,8 @@
 			prop="orders_id"
 			label="ID"
 			width="180"
+			class="test"
+			@click="handleKeepAlive"
 		/>
 		<vc-table-column
 			prop="orders_sn"
@@ -37,12 +39,22 @@ export default {
 
 	},
 	watch: {
-		
+
 	},
 	created() {
-		
+
 	},
 	methods: {
+		handleKeepAlive() {
+			console.log('handleKeepAlive');
+			// KeepAlive.popup({
+			// 	data: { s: Math.random() }
+			// }).then((res) => {
+			// 	console.log(res, 'sure');
+			// }).catch((res) => {
+			// 	console.log(res, 'close');
+			// });
+		},
 		handleResetFirst() {
 			this.$store.commit('TPL_PAGING_BASIC_LIST_INIT');
 		},

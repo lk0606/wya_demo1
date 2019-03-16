@@ -1,10 +1,10 @@
 <template>
 	<div class="c-layout-left-menu">
 		<slot name="avatar" />
-		<div 
-			v-for="(menu, index) in menus" 
+		<div
+			v-for="(menu, index) in menus"
 			:key="index"
-			:class="$route.path.indexOf(menu.route) > -1 ? '_menu-item-active' : '_menu-item-unactive'" 
+			:class="$route.path.indexOf(menu.route) > -1 ? '_menu-item-active' : '_menu-item-unactive'"
 			class="_menu-item"
 			@click="handleLinkTo(menu)"
 		>
@@ -71,7 +71,7 @@ export default {
 		opacity: 0.8;
 		&:hover {
 			background-color: #f2f1f4;
-			opacity: 1;			
+			opacity: 1;
 			will-change: opacity;
 			transition: opacity 0.2s ease-in-out;
 		}
