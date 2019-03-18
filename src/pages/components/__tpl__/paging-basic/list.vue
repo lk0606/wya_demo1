@@ -7,7 +7,7 @@
 		:reset="tableData.reset"
 		:load-data="loadData"
 		:style="style"
-		class="vc-paging g-m-t-20 v-customer-intention-list _width"
+		class="vc-paging g-m-t-20 v-customer-intention-list"
 		mode="table"
 		history
 		show
@@ -129,9 +129,10 @@ export default {
 			console.log(val);
 			this.multipleSelection = val;
 		},
-		handlePopup() {
+		handlePopup(row) {
+			console.log(row, '--------row');
 			KeepAlive.popup({
-				// data: this.listInfo
+				data: row
 			}).then((res) => {
 				console.log(res);
 			}).catch((res) => {
@@ -187,9 +188,6 @@ export default {
 </script>
 
 <style lang="scss">
-._width {
-	/*width: 1200px;*/
-}
 .vc-paging {
 	margin-bottom: 40px;
 }
