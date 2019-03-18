@@ -1,3 +1,4 @@
+import { Storage, ReGex } from '@utils/utils';
 import API_ROOT from './apis/root';
 /**
  * 根级别actions
@@ -20,7 +21,7 @@ export const actions = {
 			console.error('[rootActions/request], mutation需要对应的url');
 			return !1;
 		}
-		
+
 		// pending 为 false，则必须要写_PENDING的mutation
 		pending && store.commit(redirect || `${mutation}_PENDING`, { param });
 		return net.ajax({

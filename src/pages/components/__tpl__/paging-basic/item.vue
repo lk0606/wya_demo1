@@ -1,24 +1,75 @@
 <template>
 	<section>
 		<vc-table-column
-			prop="orders_id"
-			label="ID"
-			width="180"
-			class="test"
-			@click="handleKeepAlive"
-		/>
+			type="selection"
+			fixed
+			width="55"/>
 		<vc-table-column
-			prop="orders_sn"
-			label="信息"
+			fixed
+			prop="customer_name"
+			label="公司名称"
 			width="180"
 		/>
 		<vc-table-column
-			prop="address"
-			label="地址"
-		>
-			<div @click="handleResetFirst">回到首页刷新</div>
-			<div @click="handleResetCur">当前页刷新</div>
-		</vc-table-column>
+			prop="customer_id"
+			label="客户名称"
+			width="180"
+		/>
+		<vc-table-column
+			prop="tel"
+			label="客户电话"
+			width="180"
+		/>
+		<vc-table-column
+			prop="level_str"
+			label="客户等级"
+			width="180"
+		/>
+		<vc-table-column
+			prop="capital"
+			label="注册资金"
+			width="180"
+		/>
+		<vc-table-column
+			prop="connect_status"
+			label="接通状态"
+			width="180"
+		/>
+		<vc-table-column
+			prop="surplus_days"
+			label="剩余保护时间"
+			width="180"
+		/>
+		<vc-table-column
+			prop="is_own"
+			label="负责人"
+			width="180"
+		/>
+		<vc-table-column
+			prop="get_time"
+			label="领取时间"
+			width="180"
+		/>
+		<vc-table-column
+			prop="customer_intention"
+			label="客户意向"
+			width="180"
+		/>
+		<vc-table-column
+			prop="create_time"
+			label="创建时间"
+			width="180"
+		/>
+		<vc-table-column
+			prop="change_times"
+			label="转手次数"
+			width="180"
+		/>
+		<vc-table-column
+			prop="capital"
+			label="公司规模"
+			width="180"
+		/>
 	</section>
 </template>
 
@@ -45,23 +96,13 @@ export default {
 
 	},
 	methods: {
-		handleKeepAlive() {
-			console.log('handleKeepAlive');
-			// KeepAlive.popup({
-			// 	data: { s: Math.random() }
-			// }).then((res) => {
-			// 	console.log(res, 'sure');
-			// }).catch((res) => {
-			// 	console.log(res, 'close');
-			// });
-		},
-		handleResetFirst() {
-			this.$store.commit('TPL_PAGING_BASIC_LIST_INIT');
-		},
-		handleResetCur() {
-			this.$store.commit('TPL_PAGING_BASIC_LIST_RESET');
-		},
-	},
+		// handleResetFirst() {
+		// 	this.$store.commit('TPL_PAGING_BASIC_LIST_INIT');
+		// },
+		// handleResetCur() {
+		// 	this.$store.commit('TPL_PAGING_BASIC_LIST_RESET');
+		// },
+	}
 };
 </script>
 

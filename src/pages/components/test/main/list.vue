@@ -8,11 +8,12 @@
 		:load-data="loadData"
 		mode="table"
 		class="g-m-t-20 v-test-main-list"
-		@cell-click="handlePopup"
+		@row-click="handlePopup"
 		@page-size-change="handleChangePageSize"
 	>
 		<test-item />
-</vc-paging></template>
+	</vc-paging>
+</template>
 
 <script>
 import { URL } from '@utils/utils';

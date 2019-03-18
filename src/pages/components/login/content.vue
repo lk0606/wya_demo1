@@ -4,7 +4,7 @@
 		:model="formValidate"
 		:rules="ruleValidate"
 		:label-width="120"
-		style="height: 100vh"
+		style="height: 100vh;"
 		position="left"
 		class="g-flex-cc g-fd-c"
 	>
@@ -32,8 +32,8 @@ export default {
 	data() {
 		return {
 			formValidate: {
-				user: '',
-				password: '',
+				user: 'lk',
+				password: '123',
 			},
 			ruleValidate: {
 				user: [
@@ -59,21 +59,22 @@ export default {
 				this.request({
 					url: 'LOGIN_MAIN_POST',
 					type: 'POST',
-					localData: {
-						status: 1,
-						data: {
-							...this.formValidate
-						}
-					},
-					// mode: 'cors',
-					// params: {
-					// 	name: '13155556666',
-					// 	password: '123456'
+					// localData: {
+					// 	status: 1,
+					// 	data: {
+					// 		...this.formValidate
+					// 	}
 					// },
-					// loading: false
+					param: {
+						name: '13155556666',
+						password: 'e10adc3949ba59abbe56e057f20f883e'
+					},
+					requestType: "form-data:json",
+					loading: false
 				}).then((res) => {
 					console.log(res);
 					Message.success(`登录成功 - userName: ${this.loginMain.user}`);
+					console.log(res.data.token, 'token');
 					Storage.set(`user`, res);
 					this.$router.replace('/tpl/main');
 
