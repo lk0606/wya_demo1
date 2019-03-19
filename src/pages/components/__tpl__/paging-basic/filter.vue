@@ -3,7 +3,7 @@
 		<div class="g-flex g-jc-sb">
 			<div>
 				<vc-input
-					v-model="keywords.search"
+					v-model="keywords.keyword"
 					placeholder="请输入公司名称、姓名或电话搜索"
 					style="width: 240px;"
 					clearable
@@ -48,7 +48,7 @@
 					<div class="g-flex g-fw-w" style="min-width: 796px;">
 						<div class="g-m-r-5">
 							<vc-input
-								v-model="keywords.name"
+								v-model="keywords.responsibility"
 								style="width: 220px;"
 								placeholder="请输入负责人或手机号搜索"
 								@enter="handleSearch"
@@ -57,13 +57,13 @@
 						</div>
 						<div class="g-m-r-5">
 							<vc-select
-								v-model="value"
+								v-model="keywords.connect_status"
 								clearable
 								style="width: 220px;"
 								placeholder="请选择接通状态"
 							>
 								<vc-option
-									v-for="item in cityList"
+									v-for="item in connect_status"
 									:value="item.value"
 									:key="item.value"
 								>{{ item.label }}</vc-option>
@@ -71,13 +71,13 @@
 						</div>
 						<div class="g-m-r-5">
 							<vc-select
-								v-model="value"
+								v-model="keywords.intention"
 								clearable
 								style="width: 220px;"
 								placeholder="请选择客户意向"
 							>
 								<vc-option
-									v-for="item in cityList"
+									v-for="item in intention"
 									:value="item.value"
 									:key="item.value"
 								>{{ item.label }}</vc-option>
@@ -85,21 +85,23 @@
 						</div>
 						<div class="g-m-r-5">
 							<vc-date-picker
+								:value="keywords.visit_time"
 								class="_date-picker-placeholder"
 								type="date"
 								confirm
 								placeholder="上次跟进时间"
-								style="width: 220px;"/>
+								style="width: 220px;"
+								@change="handleVisitTime"/>
 						</div>
 						<div class="g-m-r-5">
 							<vc-select
-								v-model="value"
+								v-model="keywords.is_own"
 								clearable
 								style="width: 220px;"
 								placeholder="全部客户"
 							>
 								<vc-option
-									v-for="item in cityList"
+									v-for="item in is_own"
 									:value="item.value"
 									:key="item.value"
 								>{{ item.label }}</vc-option>
@@ -107,13 +109,13 @@
 						</div>
 						<div class="g-m-r-5">
 							<vc-select
-								v-model="value"
+								v-model="keywords.level"
 								clearable
 								style="width: 220px;"
 								placeholder="请选择客户等级"
 							>
 								<vc-option
-									v-for="item in cityList"
+									v-for="item in level"
 									:value="item.value"
 									:key="item.value"
 								>{{ item.label }}</vc-option>
@@ -121,19 +123,25 @@
 						</div>
 						<div class="g-m-r-5">
 							<vc-date-picker
+								:value="keywords.start_time"
 								class="_date-picker-placeholder"
 								type="date"
 								confirm
 								placeholder="保护时间（开始）"
-								style="width: 220px;"/>
+								style="width: 220px;"
+								@change="handleStartTime"
+							/>
 						</div>
 						<div class="g-m-r-5">
 							<vc-date-picker
+								:value="keywords.end_time"
 								class="_date-picker-placeholder"
 								type="date"
 								confirm
 								placeholder="保护时间（结束）"
-								style="width: 220px;"/>
+								style="width: 220px;"
+								@change="handleEndTime"
+							/>
 						</div>
 					</div>
 				</div>
@@ -155,8 +163,17 @@ export default {
 		const { query = {} } = this.$route;
 		return {
 			keywords: {
-				search: String(query.search || ''),
-				name: String(query.name || ''),
+				// search: String(query.search || ''),
+				// name: String(query.name || ''),
+				keyword: query.keyword,
+				responsibility: query.responsibility,
+				connect_status: query.connect_status,
+				intention: query.intention,
+				visit_time: query.visit_time,
+				is_own: query.is_own,
+				level: query.level,
+				start_time: query.start_time,
+				end_time: query.start_time
 			},
 			show: true,
 			cityList: [
@@ -185,10 +202,91 @@ export default {
 					label: 'Canberra'
 				}
 			],
+			level: [
+				{
+					label: '临时客户',
+					value: 0
+				},
+				{
+					label: '普通客户',
+					value: 1
+				},
+				{
+					label: '重要客户',
+					value: 2
+				}
+			],
+			is_own: [
+				{
+					value: 1,
+					label: '我的客户'
+				},
+				{
+					value: 2,
+					label: '全部客户'
+				}
+			],
+			intention: [
+				{
+					value: 1,
+					label: '无意向'
+				},
+				{
+					value: 2,
+					label: '待联系'
+				},
+				{
+					value: 3,
+					label: '跟进中'
+				}
+			],
+			connect_status: [
+				{
+					value: 1,
+					label: '已接'
+				},
+				{
+					value: 2,
+					label: '未接'
+				},
+				{
+					value: 3,
+					label: '拒接'
+				},
+				{
+					value: 4,
+					label: '微信'
+				},
+				{
+					value: 5,
+					label: '空号'
+				},
+				{
+					value: 6,
+					label: '未拨'
+				}
+			],
 			value: '请选择接通状态',
 		};
 	},
+	computed: {
+		listInfo() {
+			return this.$store.state.tplPagingBasic.listInfo;
+		}
+	},
 	methods: {
+		handleVisitTime(e) {
+			this.keywords.visit_time = e;
+			this.handleSearch();
+		},
+		handleStartTime(e) {
+			this.keywords.start_time = e;
+			this.handleSearch();
+		},
+		handleEndTime(e) {
+			this.keywords.end_time = e;
+			this.handleSearch();
+		},
 		handleSearch: debounce(function (value) {
 			let query = {
 				...this.$route.query,
@@ -215,7 +313,7 @@ export default {
 			}
 		},
 		handleExport() {}
-	}
+	},
 };
 
 </script>

@@ -5,6 +5,7 @@ import API_ROOT from './apis/root';
  */
 import net from '../utils/net';
 
+const token = Storage.get('user').data.token;
 export const actions = {
 	request(store, opts = {}) {
 		const {
@@ -21,7 +22,6 @@ export const actions = {
 			console.error('[rootActions/request], mutation需要对应的url');
 			return !1;
 		}
-
 		// pending 为 false，则必须要写_PENDING的mutation
 		pending && store.commit(redirect || `${mutation}_PENDING`, { param });
 		return net.ajax({

@@ -1,17 +1,16 @@
 <template>
 	<vc-paging
 		ref="multipleTable"
-		:data-source="tableData.data"
-		:count="tableData.count"
-		:total="tableData.total"
-		:reset="tableData.reset"
+		:data-source="listInfo.data"
+		:count="listInfo.count"
+		:total="listInfo.total"
+		:reset="listInfo.reset"
 		:load-data="loadData"
 		:style="style"
 		class="vc-paging g-m-t-20 v-customer-intention-list"
 		mode="table"
 		history
 		show
-		stripe
 		@page-size-change="handleResetFirst"
 		@row-click="handlePopup"
 		@selection-change="handleSelectionChange"
@@ -23,7 +22,7 @@
 			width="55"/>
 		<vc-table-column
 			fixed
-			prop="customer_name"
+			prop="company_name"
 			label="公司名称"
 			width="180"
 		/>
@@ -83,7 +82,7 @@
 			width="180"
 		/>
 		<vc-table-column
-			prop="capital"
+			prop="scale"
 			label="公司规模"
 			width="180"
 		/>
@@ -110,9 +109,9 @@ export default {
 		};
 	},
 	computed: {
-		// listInfo() {
-		// 	return this.$store.state.tplPagingBasic.listInfo;
-		// }
+		listInfo() {
+			return this.$store.state.tplPagingBasic.listInfo;
+		}
 	},
 	mounted() {
 	},
@@ -127,60 +126,102 @@ export default {
 		},
 		handleSelectionChange(val) {
 			console.log(val);
-			this.multipleSelection = val;
+		},
+		getPortalMainData(customerId) {
+			const { query = {} } = URL.parse();
+			return this.request({
+				url: 'TPL_TABLE_LIST_GET',
+				type: 'GET',
+				param: {
+					...query,
+					customer_id: customerId
+				},
+				loading: false,
+				// requestType: "form-data:json"
+			}).then((res) => {
+				// console.log(res, 'res');
+			}).catch((error) => {
+				console.log(error, 'error');
+			});
+		},
+		getPortalHeadData(customerId) {
+			const { query = {} } = URL.parse();
+			return this.request({
+				url: 'TPL_LIST_GET',
+				type: 'GET',
+				param: {
+					...query,
+					customer_id: customerId
+				},
+				loading: false
+			}).then((res) => {
+			}).catch((error) => {
+				console.log(error, 'error');
+			});
+		},
+		getIndustryList() {
+			return this.request({
+				url: 'TPL_THIRD_ONE_GET',
+				type: 'GET',
+				loading: false
+			}).then((res) => {
+			}).catch((error) => {
+				console.log(error, 'error');
+			});
+		},
+		getScaleList() {
+			return this.request({
+				url: 'TPL_THIRD_TWO_GET',
+				type: 'GET',
+				loading: false
+			}).then((res) => {
+			}).catch((error) => {
+				console.log(error, 'error');
+			});
 		},
 		handlePopup(row) {
-			console.log(row, '--------row');
+			console.log(row.customer_id, '--------row');
+			this.getPortalMainData(row.customer_id);
+			this.getPortalHeadData(row.customer_id);
+			this.getIndustryList();
+			this.getScaleList();
 			KeepAlive.popup({
 				data: row
 			}).then((res) => {
-				console.log(res);
+				console.log(res, 'row data...');
 			}).catch((res) => {
 				console.log(res);
 			});
 		},
 		loadData(page, pageSize) {
-			// const { query = {} } = URL.parse();
+			const { query = {} } = URL.parse();
 			return this.request({
 				url: 'TPL_PAGING_BASIC_LIST_GET',
 				type: 'GET',
-				headers: {
-					'-token': 'c7a11b2f1922c389a21855dc1b670c48'
-				},
 				param: {
-					// ...query,
+					...query,
 					is_own: 2,
 					page: page || 1,
 					pageSize: pageSize || 10
 				},
 				loading: false,
-				requestType: "form-data:json"
+				// requestType: "form-data:json"
 			}).then((res) => {
 				console.log(res, 'res');
-				let { list, currentPage, totalPage, totalCount } = res.data;
-				this.tableData = {
-					total: totalPage,
-					count: totalCount,
-					current: currentPage,
-					reset: false,
-					data: {
-						[page]: list
-					}
-				};
 			}).catch((error) => {
 				console.log(error, 'error');
 			});
 		},
 		handleChangePageSize() {
-			// this.$store.commit('TPL_PAGING_BASIC_LIST_INIT');
+			this.$store.commit('TPL_PAGING_BASIC_LIST_INIT');
 		},
 		handleResetFirst() {
-			this.loadData();
-			// this.$store.commit('TPL_PAGING_BASIC_LIST_INIT');
+			// this.loadData();
+			this.$store.commit('TPL_PAGING_BASIC_LIST_INIT');
 		},
 		handleResetCur() {
 			// this.loadData();
-			// this.$store.commit('TPL_PAGING_BASIC_LIST_RESET');
+			this.$store.commit('TPL_PAGING_BASIC_LIST_RESET');
 		},
 	}
 };

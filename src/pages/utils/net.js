@@ -8,6 +8,7 @@
 import createHttpClient from '@wya/http';
 import { Message } from '@wya/vc';
 import API_ROOT from '@stores/apis/root';
+import { Storage } from '@utils/utils';
 
 const loadingFn = (options = {}) => {
 	const { tipMsg } = options;
@@ -30,6 +31,17 @@ const otherFn = ({ response }) => {
 
 const beforeFn = ({ options }) => {
 	// 可以是promise，不要随便写return
+	let {
+		headers,
+		...rest
+	} = options;
+	if (Storage.get('user')) {
+		headers['-token'] = Storage.get('user').data.token;
+	}
+	return Promise.resolve({
+		headers,
+		...rest
+	});
 };
 const afterFn = ({ options, response }) => {
 	const { autoTip = false, errorMsg, successMsg } = options;
