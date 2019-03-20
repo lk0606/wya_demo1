@@ -126,10 +126,10 @@
 
 <script>
 import { URL } from '@utils/utils';
-import { Edit } from './edit';
+import { Edit } from './edit/edit';
 
 export default {
-	name: 'v-tpl-item',
+	name: 'oa-item',
 	components: {
 
 	},
@@ -216,9 +216,10 @@ export default {
 				console.log(res);
 			});
 		},
-	}
+	},
 };
 </script>
 
 <style lang="scss">
 </style>
+

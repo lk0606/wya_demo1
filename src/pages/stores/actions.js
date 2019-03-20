@@ -5,7 +5,6 @@ import API_ROOT from './apis/root';
  */
 import net from '../utils/net';
 
-const token = Storage.get('user').data.token;
 export const actions = {
 	request(store, opts = {}) {
 		const {

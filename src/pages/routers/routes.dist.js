@@ -3,8 +3,7 @@ import { PRE_ROUTER_URL } from '../constants/constants';
 import { loginConfig } from '../containers/login/app';
 import { tplConfig } from '../containers/__tpl__/app';
 import { settingConfig } from '../containers/setting/app';
-import { homeConfig } from '../containers/home/app';
-import { testConfig } from '../containers/test/app';
+import { saleConfig } from '../containers/sale/app';
 
 export default {
 	base: PRE_ROUTER_URL,
@@ -21,8 +20,7 @@ export default {
 				},
 				...tplConfig,
 				...settingConfig,
-				...homeConfig,
-				...testConfig
+				...saleConfig
 			]
 		},
 		{
