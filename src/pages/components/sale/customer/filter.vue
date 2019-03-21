@@ -176,32 +176,6 @@ export default {
 				end_time: query.start_time
 			},
 			show: true,
-			cityList: [
-				{
-					value: 'New York',
-					label: 'New York'
-				},
-				{
-					value: 'London',
-					label: 'London'
-				},
-				{
-					value: 'Sydney',
-					label: 'Sydney'
-				},
-				{
-					value: 'Ottawa',
-					label: 'Ottawa'
-				},
-				{
-					value: 'Paris',
-					label: 'Paris'
-				},
-				{
-					value: 'Canberra',
-					label: 'Canberra'
-				}
-			],
 			level: [
 				{
 					label: '临时客户',
@@ -293,10 +267,10 @@ export default {
 				...this.keywords,
 			};
 			this.$router.replace(URL.merge({
-				path: `/tpl/paging/basic`,
+				path: `/sale/customer`,
 				query
 			}));
-			this.$store.commit('TPL_PAGING_BASIC_LIST_INIT');
+			this.$store.commit('SALE_CUSTOMER_TABLE_LIST_INIT');
 		}, 300),
 		handleToggle() {
 			this.$refs.expand.toggle();

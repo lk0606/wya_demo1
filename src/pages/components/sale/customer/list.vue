@@ -10,7 +10,6 @@
 		:load-data="loadData"
 		mode="table"
 		class="_customer-list-paging g-m-t-20 v-customer-intention-list"
-		@page-size-change="handleChangePageSize"
 	>
 		<oa-item />
 	</vc-paging>
@@ -65,9 +64,6 @@ export default {
 			}).catch((error) => {
 				console.log(error, 'error');
 			});
-		},
-		handleChangePageSize() {
-			this.$store.commit('SALE_CUSTOMER_TABLE_LIST_INIT');
 		}
 	}
 };

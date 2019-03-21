@@ -19,7 +19,7 @@
 			width="180"
 		>
 			<template slot-scope="{ row }">
-				<div>{{ row.customer_id }}</div>
+				<div>{{ row.customer_name }}</div>
 			</template>
 		</vc-table-column>
 		<vc-table-column

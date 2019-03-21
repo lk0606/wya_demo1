@@ -19,7 +19,7 @@
 			width="180"
 		>
 			<template slot-scope="{ row }">
-				<div>{{ row.customer_id }}</div>
+				<div>{{ row.customer_name }}</div>
 			</template>
 		</vc-table-column>
 		<vc-table-column
@@ -153,7 +153,7 @@ export default {
 		getPortalMainData(customerId) {
 			const { query = {} } = URL.parse();
 			return this.request({
-				url: 'TPL_TABLE_LIST_GET',
+				url: '_SALE_CUSTOMER_EDIT_MAIN_GET',
 				type: 'GET',
 				param: {
 					...query,
@@ -170,32 +170,12 @@ export default {
 		getPortalHeadData(customerId) {
 			const { query = {} } = URL.parse();
 			return this.request({
-				url: 'TPL_LIST_GET',
+				url: '_SALE_CUSTOMER_EDIT_HEAD_GET',
 				type: 'GET',
 				param: {
 					...query,
 					customer_id: customerId
 				},
-				loading: false
-			}).then((res) => {
-			}).catch((error) => {
-				console.log(error, 'error');
-			});
-		},
-		getIndustryList() {
-			return this.request({
-				url: 'TPL_THIRD_ONE_GET',
-				type: 'GET',
-				loading: false
-			}).then((res) => {
-			}).catch((error) => {
-				console.log(error, 'error');
-			});
-		},
-		getScaleList() {
-			return this.request({
-				url: 'TPL_THIRD_TWO_GET',
-				type: 'GET',
 				loading: false
 			}).then((res) => {
 			}).catch((error) => {
@@ -209,7 +189,7 @@ export default {
 			this.getIndustryList();
 			this.getScaleList();
 			Edit.popup({
-				data: row
+				row
 			}).then((res) => {
 				console.log(res, 'row data...');
 			}).catch((res) => {

@@ -11,7 +11,6 @@
 		mode="table"
 		history
 		show
-		@page-size-change="handleResetFirst"
 		@selection-change="handleSelectionChange"
 	>
 		<tpl-item/>
@@ -73,15 +72,13 @@ export default {
 				console.log(error, 'error');
 			});
 		},
-		handleChangePageSize() {
-			this.$store.commit('TPL_PAGING_BASIC_LIST_INIT');
-		},
+		// handleChangePageSize() {
+		// 	this.$store.commit('TPL_PAGING_BASIC_LIST_INIT');
+		// },
 		handleResetFirst() {
-			// this.loadData();
-			this.$store.commit('TPL_PAGING_BASIC_LIST_INIT');
+			// this.$store.commit('TPL_PAGING_BASIC_LIST_INIT');
 		},
 		handleResetCur() {
-			// this.loadData();
 			this.$store.commit('TPL_PAGING_BASIC_LIST_RESET');
 		},
 	}

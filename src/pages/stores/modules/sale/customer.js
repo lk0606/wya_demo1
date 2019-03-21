@@ -11,16 +11,7 @@ const initialState = {
 };
 
 const mutations = {
-	SALE_CUSTOMER_TABLE_LIST_INIT(state, payload) {
-		state.listInfo = {
-			...initialState.listInfo
-		};
-	},
-	SALE_CUSTOMER_ROUTE_CHANGE(state, payload) {
-		state.listInfo = {
-			...initialState.listInfo
-		};
-	},
+	// table data
 	SALE_CUSTOMER_TABLE_LIST_GET_SUCCESS(state, { data, param: { page } }) {
 		console.log(data, 'table data');
 		state.listInfo = {
@@ -36,41 +27,58 @@ const mutations = {
 		};
 		console.log(state.listInfo, 'state.listInfo');
 	},
-	// customer body
-	SALE_CUSTOMER_EDIT_POPUP_GET_SUCCESS(state, { data, param: { customerId } }) {
+	// edit main
+	_SALE_CUSTOMER_EDIT_MAIN_GET_SUCCESS(state, { data, param: { customerId } }) {
 		state.customerMainData = {
 			...data
 		};
-		// state.customerMainData = data;
 		console.log(state.customerMainData, 'customerMainData');
 	},
-	// customer head
-	SALE_CUSTOMER_EDIT_POPUP_HEAD_GET_SUCCESS(state, { data, param: { customerId } }) {
+	// edit head
+	_SALE_CUSTOMER_EDIT_HEAD_GET_SUCCESS(state, { data, param: { customerId } }) {
 		state.customerHeadData = {
 			...data
 		};
 		console.log(state.customerHeadData, 'customerHeadData');
 	},
-	// industry select
-	SALE_CUSTOMER_INDUSTRY_GET_SUCCESS(state, { data }) {
-		state.industryList = {
-			...data
-		};
-		console.log(state.industryList, 'industryList');
-	},
-	// scale select
-	SALE_CUSTOMER_SCALE_GET_SUCCESS(state, { data }) {
-		state.scaleList = {
-			...data
-		};
-		console.log(state.scaleList, 'industryList');
-	},
-	// save edit data
-	SALE_CUSTOMER_EDIT_SAVE_POST_SUCCESS(state, { data }) {
+	// edit save
+	_SALE_CUSTOMER_EDIT_SAVE_POST_SUCCESS(state, { data }) {
 		// state.customerMainData = {
 		// 	...data
 		// };
 		console.log(data, 'save edit data');
+	},
+	// // industry select
+	// _SALE_CUSTOMER_INDUSTRY_LIST_GET_SUCCESS(state, { data }) {
+	// 	state.industryList = {
+	// 		...data
+	// 	};
+	// 	console.log(state.industryList, 'industryList');
+	// },
+	// // scale select
+	// _SALE_CUSTOMER_SCALE_LIST_GET_SUCCESS(state, { data }) {
+	// 	state.scaleList = {
+	// 		...data
+	// 	};
+	// 	console.log(state.scaleList, 'scaleList');
+	// },
+
+	// init
+	SALE_CUSTOMER_TABLE_LIST_INIT(state, payload) {
+		state.listInfo = {
+			...initialState.listInfo
+		};
+	},
+	SALE_CUSTOMER_ROUTE_CHANGE(state, payload) {
+		state.listInfo = {
+			...initialState.listInfo
+		};
+	},
+	SALE_CUSTOMER_TABLE_LIST_RESET(state, payload) {
+		state.listInfo = {
+			...initPage,
+			reset: true
+		};
 	},
 	TPL_PAGING_BASIC_LIST_RESET(state, payload) {
 		state.listInfo = {

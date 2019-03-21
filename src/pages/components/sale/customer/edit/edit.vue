@@ -75,7 +75,7 @@
 						<span
 							v-show="isEdit"
 							class="g-operation g-m-lr-5 g-fs-14"
-							@click="handleSave()"
+							@click="handleSave"
 						>保存</span>
 						<span
 							v-show="isEdit"
@@ -102,7 +102,7 @@
 										label="公司名称:"
 										prop="company_name">
 										<vc-input
-											v-model="formValidate.company_name"
+											v-model="customerMainData.company_name"
 											class="_edit-input"
 											clearable
 											placeholder="请输入公司名称"
@@ -122,15 +122,15 @@
 									</span>
 									<vc-select
 										v-show="isEdit"
-										v-model="customerMainData.scale"
+										v-model="scale_id"
 										clearable
 										style="width: 220px;"
 										placeholder="请选择公司规模"
 									>
 										<vc-option
 											v-for="item in scaleList"
-											:value="item.scale_name"
-											:key="item.scale_id"
+											:value="item.scale_id"
+											:key="item.scale_name"
 										>{{ item.scale_name }}</vc-option>
 									</vc-select>
 								</div>
@@ -243,15 +243,15 @@
 									</span>
 									<vc-select
 										v-show="isEdit"
-										v-model="customerMainData.industry"
+										v-model="industry_id"
 										clearable
 										style="width: 220px;"
 										placeholder="请选择行业"
 									>
 										<vc-option
-											v-for="(item) in industryList"
-											:value="item.industry_name"
-											:key="item.industry_id"
+											v-for="item in industryList"
+											:value="item.industry_id"
+											:key="item.industry_name"
 										>{{ item.industry_name }}</vc-option>
 									</vc-select>
 								</div>
@@ -370,7 +370,7 @@
 </template>
 
 <script>
-import { URL, Storage } from '@utils/utils';
+import { URL, Storage, cloneDeepEasier } from '@utils/utils';
 import { Spin, Drawer, CreatePortal, Message } from '@wya/vc';
 import { services } from "@stores/services/sale";
 
@@ -381,69 +381,68 @@ const config = {
 		'vc-spin': Spin
 	},
 	props: {
-		data: Object
+		row: Object
 	},
-	mixins: [services.region3()],
+	mixins: [
+		services.region3()
+	],
 	data() {
 		return {
 			showModal: false,
 			isEdit: false,
-			title: this.data.company_name,
+			title: this.row.company_name,
 			width: 720,
 			visible: false,
 			loading: false,
 			areaVal: [],
+			industryList: {},
+			scaleList: {},
+			industry_id: '',
+			scale_id: '',
 			formValidate: {
-				company_name: '',
+				company_name: this.row.company_name,
 			},
 			ruleValidate: {
 				company_name: [{
 					required: true, message: '请输入公司名称'
-				}],
-				capital: [{
-					required: true, pattern: /^([1-9][\d]{0,10}|0)([.]?[\d]{1,2})?$/, message: '请输入注册资金', trigger: 'blur'
-				}],
-				customer_name: [{
-					required: true, message: '请输入客户姓名', trigger: 'blur'
-				}],
-				cityValue: [{
-					require: true, type: 'array', message: '请选择地区', trigger: 'blur'
-				}],
-				industry: [{
-					required: true, message: '请选择所属行业', trigger: 'blur'
 				}]
 			}
 		};
 	},
 	computed: {
 		customerMainData() {
-			return JSON.parse(JSON.stringify(this.$store.state.tplPagingBasic.customerMainData));
+			return JSON.parse(JSON.stringify(this.$store.state.saleCustomer.customerMainData));
 		},
 		customerHeadData() {
-			return this.$store.state.tplPagingBasic.customerHeadData;
+			return this.$store.state.saleCustomer.customerHeadData;
 		},
-		industryList() {
-			return this.$store.state.tplPagingBasic.industryList;
-		},
-		scaleList() {
-			let scaleList = JSON.stringify(this.$store.state.tplPagingBasic.scaleList);
-			scaleList = JSON.parse(scaleList);
-			return scaleList;
-		}
+		// industryList() {
+		// 	return JSON.parse(JSON.stringify(this.$store.state.saleCustomer.industryList));
+		// },
+		// scaleList() {
+		// 	return JSON.parse(JSON.stringify(this.$store.state.saleCustomer.scaleList));
+		// }
 	},
 	created() {
+		// this.getIndustryList();
+		// this.getScaleList();
+		this.test();
 	},
 	mounted() {
 		this.visible = true;
-		// this.company_name = this.customerMainData.company_name
+		this.industry_name = this.customerMainData.industry;
+		// this.formValidate.company_name = this.customerMainData.company_name
 	},
 	updated() {
 	},
 	methods: {
+		test() {
+			console.log('test');
+		},
 		getPortalMainData(customerId) {
 			const { query = {} } = URL.parse();
 			return this.request({
-				url: 'SALE_CUSTOMER_EDIT_POPUP_GET',
+				url: '_SALE_CUSTOMER_EDIT_MAIN_GET',
 				type: 'GET',
 				param: {
 					...query,
@@ -460,7 +459,7 @@ const config = {
 		getPortalHeadData(customerId) {
 			const { query = {} } = URL.parse();
 			return this.request({
-				url: 'SALE_CUSTOMER_EDIT_POPUP_HEAD_GET',
+				url: '_SALE_CUSTOMER_EDIT_HEAD_GET',
 				type: 'GET',
 				param: {
 					...query,
@@ -473,21 +472,25 @@ const config = {
 			});
 		},
 		getIndustryList() {
-			return this.request({
-				url: 'SALE_CUSTOMER_INDUSTRY_GET',
+			return this.$request({
+				url: '_SALE_CUSTOMER_INDUSTRY_LIST_GET',
 				type: 'GET',
 				loading: false
 			}).then((res) => {
+				console.log(res, 'this.industryList');
+				// this.industryList = res;
 			}).catch((error) => {
 				console.log(error, 'error');
 			});
 		},
 		getScaleList() {
-			return this.request({
-				url: 'SALE_CUSTOMER_SCALE_GET',
+			return this.$request({
+				url: '_SALE_CUSTOMER_SCALE_LIST_GET',
 				type: 'GET',
 				loading: false
 			}).then((res) => {
+				console.log(res, 'this.scaleList');
+				// this.scaleList = res;
 			}).catch((error) => {
 				console.log(error, 'error');
 			});
@@ -527,10 +530,12 @@ const config = {
 		},
 		handleCancerEdit() {
 			this.isEdit = false;
-			this.showModal = true;
+			// this.showModal = true;
 		},
 		handleEdit() {
 			this.isEdit = true;
+			this.industry_id = this.row.industry_id;
+			this.scale_id = this.row.scale_id;
 			this.areaVal = [
 				this.customerMainData.province,
 				this.customerMainData.city,
@@ -540,10 +545,10 @@ const config = {
 		handleSave() {
 			this.$refs.formValidate.validate((valid) => {
 				if (!valid) {
-					Message.error('必填项未填写', {
-						onClose: () => {
-							console.log('必填项未填写');
-						}
+					Message.error({
+						content: '必填项未填写',
+						maskClosable: true,
+						duration: 2
 					});
 				} else {
 					this.setPortalMainData();
@@ -554,18 +559,20 @@ const config = {
 			// this.getTableData();
 		},
 		setPortalMainData() {
-			const { query = {} } = URL.parse();
+			// const { query = {} } = URL.parse();
+			console.log(this.row, 'this.row');
+			console.log(this.industry_id, this.scale_id, 'industry,scale');
 			return this.request({
-				url: 'SALE_CUSTOMER_EDIT_SAVE_POST',
+				url: '_SALE_CUSTOMER_EDIT_SAVE_POST',
 				type: 'POST',
 				param: {
-					...query,
+					// ...query,
 					own_id: this.customerMainData.own_id,
 					staff_id: Storage.get('user').data.staff.staff_id,
 					company_name: this.customerMainData.company_name,
 					customer_name: this.customerMainData.customer_name,
-					industry_id: this.customerMainData.industry_id,
-					scale_id: this.customerMainData.scale_id,
+					industry_id: this.industry_id,
+					scale_id: this.scale_id,
 					province: this.customerMainData.province,
 					city: this.customerMainData.city,
 					area: this.customerMainData.area,
@@ -573,14 +580,22 @@ const config = {
 					address: this.customerMainData.address,
 					url: this.customerMainData.url,
 					remarks: this.customerMainData.remarks,
-					customer_id: this.data.customer_id
+					customer_id: this.row.customer_id
 				},
 				loading: false,
 				requestType: "form-data:json"
 			}).then((res) => {
-				// console.log(res, 'res');
+				console.log(res.status, 'res.status');
 				this.handleSaveState(res.status);
 			}).catch((error) => {
+				if (error.status === 0) {
+					this.isEdit = true;
+					Message.error({
+						content: '保存失败',
+						maskClosable: false,
+						duration: 2
+					});
+				}
 				console.log(error, 'error');
 			});
 		},
@@ -591,26 +606,15 @@ const config = {
 			}, 3000);
 		},
 		handleSaveState(status) {
+			console.log(status, typeof status, 'status');
 			if (status === 1) {
 				this.isEdit = false;
-				Message.success('保存成功', {
-					onClose: () => {
-						console.log('保存成功');
-					}
-				});
-			} else if (status === 0) {
-				this.isEdit = false;
-				Message.error('保存失败', {
-					onClose: () => {
-						console.log('保存失败');
-					}
-				});
-			} else {
-				this.isEdit = true;
-				Message.error('必填项未填写', {
-					onClose: () => {
-						console.log('保存失败');
-					}
+				this.$store.commit('SALE_CUSTOMER_TABLE_LIST_RESET', {});
+				// this.$store.commit('SALE_CUSTOMER_EDIT_POPUP_GET_SUCCESS', {});
+				Message.success({
+					content: '保存成功',
+					maskClosable: false,
+					duration: 300
 				});
 			}
 		},
@@ -646,7 +650,7 @@ export const Edit = CreatePortal({
 	alive: true,
 	aliveRegExp: {
 		// className: /(ivu-btn|v-transfer-dom)/
-		className: /(el-table__row | pswp)/
+		className: /(el-table__row | pswp | __bg)/
 	}
 }, config);
 </script>

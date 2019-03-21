@@ -69,6 +69,7 @@ const mutations = {
 			reset: true
 		};
 	},
+	// 分页
 	TPL_PAGING_BASIC_LIST_INIT(state, payload) {
 		state.listInfo = {
 			...initPage.listInfo
